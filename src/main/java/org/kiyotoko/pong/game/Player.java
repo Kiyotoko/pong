@@ -12,9 +12,9 @@ import org.kiyotoko.pong.App;
 import org.kiyotoko.pong.net.PlayerOuterClass;
 
 public class Player extends GameObject {
-    private int points;
+    private int score;
 
-    private final Label scoreboard = new Label("" + points);
+    private final Label scoreboard = new Label("" + score);
     private final BorderPane pane = new BorderPane(scoreboard);
 
     private final PlayerOuterClass.Player.Builder builder = PlayerOuterClass.Player.newBuilder();
@@ -40,15 +40,15 @@ public class Player extends GameObject {
     private boolean downPressed;
 
     public EventHandler<KeyEvent> getEventHandler(
-            KeyCode moveTop, KeyCode moveDown, boolean onAction) {
+            KeyCode moveUp, KeyCode moveDown, boolean onAction) {
         return event -> {
-            if (event.getCode() == moveTop) {
+            if (event.getCode() == moveUp) {
                 upPressed = onAction;
             }
             if (event.getCode() == moveDown) {
                 downPressed = onAction;
             }
-            setVelocity(new Point2D(0.0, (upPressed ? 1.0 : 0.0) + (downPressed ? -1.0 : 0.0)));
+            setVelocity(new Point2D(0.0, (upPressed ? -1.0 : 0.0) + (downPressed ? 1.0 : 0.0)));
         };
     }
 
@@ -59,7 +59,7 @@ public class Player extends GameObject {
     }
 
     public void setPoints(int points) {
-        this.points = points;
+        this.score = points;
         getScoreboard().setText("" + points);
         if (points >= 11) {
             getGame().end(getGame().getGameObjects().indexOf(this) + 1);
@@ -67,7 +67,7 @@ public class Player extends GameObject {
     }
 
     public int getPoints() {
-        return points;
+        return score;
     }
 
     public Label getScoreboard() {
@@ -79,6 +79,6 @@ public class Player extends GameObject {
     }
 
     public PlayerOuterClass.Player getPlayer() {
-        return builder.setScore(points).setPaddle(getGameObject()).build();
+        return builder.setScore(score).setPaddle(getGameObject()).build();
     }
 }

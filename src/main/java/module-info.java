@@ -14,4 +14,6 @@ module pong {
     requires io.grpc.protobuf;
     requires annotations.api;
     requires org.slf4j;
+    requires java.desktop;
+    requires ch.qos.logback.core;
 }
