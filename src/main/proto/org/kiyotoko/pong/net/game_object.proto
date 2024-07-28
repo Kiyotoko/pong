@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "org/kiyotoko/pong/net/vector2d.proto";
+
+option optimize_for = SPEED;
+option java_package = "org.kiyotoko.pong.net";
+
+message GameObject {
+  string object_id = 1;
+  Vector2D position = 2;
+  Vector2D velocity = 3;
+}

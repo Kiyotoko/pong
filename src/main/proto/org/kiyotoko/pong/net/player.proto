@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "org/kiyotoko/pong/net/game_object.proto";
+
+option optimize_for = SPEED;
+option java_package = "org.kiyotoko.pong.net";
+
+message Player {
+  GameObject paddle = 1;
+  uint32 score = 2;
+}
