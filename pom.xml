@@ -45,6 +45,12 @@
             <artifactId>javafx-controls</artifactId>
             <version>19</version>
         </dependency>
+        <!-- Screenshots -->
+        <dependency>
+            <groupId>org.glavo</groupId>
+            <artifactId>simple-png-javafx</artifactId>
+            <version>0.2.0</version>
+        </dependency>
         <!-- Proto files -->
         <dependency>
             <groupId>com.google.protobuf</groupId>

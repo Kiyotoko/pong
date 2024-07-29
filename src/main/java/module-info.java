@@ -16,4 +16,5 @@ module pong {
     requires org.slf4j;
     requires java.desktop;
     requires ch.qos.logback.core;
+    requires org.glavo.png.javafx;
 }
