@@ -31,7 +31,7 @@ public class Game extends Scene {
             event -> updateAll()));
 
     public Game(Group content) {
-        super(content, 720, 360);
+        super(content, 720, 480);
         this.content = content;
 
         setFill(Color.BLACK);

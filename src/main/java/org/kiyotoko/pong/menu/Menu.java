@@ -12,7 +12,7 @@ import org.kiyotoko.pong.net.RemoteGame;
 
 public class Menu extends Scene {
     public Menu(Group content) {
-        super(content);
+        super(content, 720, 480);
 
         Button single = new Button("Single", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.COMPUTER)));
         Button duo = new Button("Duo", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.LOCAL)));
@@ -21,7 +21,10 @@ public class Menu extends Scene {
 
         VBox box = new VBox(10);
         box.getChildren().addAll(new BorderPane(single), new BorderPane(duo), new BorderPane(host), new BorderPane(join));
-        content.getChildren().add(box);
+
+        BorderPane pane = new BorderPane(box);
+        pane.setPrefSize(getWidth(), getHeight());
+        content.getChildren().add(pane);
         setFill(Color.BLACK);
     }
 }

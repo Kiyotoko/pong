@@ -12,7 +12,7 @@ public class Button extends Label {
         super(text.toUpperCase());
 
         setTextFill(Color.WHITE);
-        setFont(Font.loadFont(App.class.getResourceAsStream("ARCADECLASSIC.TTF"), 72));
+        setFont(Font.loadFont(App.class.getResourceAsStream("ARCADECLASSIC.TTF"), 68));
         setOnMousePressed(onAction);
     }
 }

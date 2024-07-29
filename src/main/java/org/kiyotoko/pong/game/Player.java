@@ -36,8 +36,17 @@ public class Player extends GameObject {
         getShape().setHeight(100.0);
     }
 
+    @Override
+    public void update() {
+        super.update();
+        if (computer) {
+            createComputerInput();
+        }
+    }
+
     private boolean upPressed;
     private boolean downPressed;
+    private boolean computer;
 
     public EventHandler<KeyEvent> getEventHandler(
             KeyCode moveUp, KeyCode moveDown, boolean onAction) {
@@ -50,6 +59,39 @@ public class Player extends GameObject {
             }
             setVelocity(new Point2D(0.0, (upPressed ? -1.0 : 0.0) + (downPressed ? 1.0 : 0.0)));
         };
+    }
+
+    private void createComputerInput() {
+        Player opponent = null;
+        for (var player : getGame().getPlayers().values()) {
+            if (player.getPosition().distance(getPosition()) > 100) {
+                opponent = player;
+                break;
+            }
+        }
+        double corrigation = 0;
+        if (opponent != null) {
+            if (opponent.getPosition().getY() <= getGame().getHeight() * 0.5) {
+                corrigation = 3;
+            } else {
+                corrigation = -3;
+            }
+        }
+
+        for (var ball : getGame().getBalls().values()) {
+            if (ball.getPosition().getY() < getPosition().getY() + corrigation) {
+                upPressed = true;
+                downPressed = false;
+            } else {
+                upPressed = false;
+                downPressed = true;
+            }
+            setVelocity(new Point2D(0.0, (upPressed ? -1.0 : 0.0) + (downPressed ? 1.0 : 0.0)));
+        }
+    }
+
+    public void enableComputerInput() {
+        computer = true;
     }
 
     @Override

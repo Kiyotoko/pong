@@ -56,9 +56,9 @@ public class LocalGame extends Game {
 
     @Override
     public void exit() {
+        getWindow().setOnCloseRequest(e -> {});
         super.exit();
         stop();
-        getWindow().setOnCloseRequest(e -> {});
     }
 
     private static final Random random = new Random();

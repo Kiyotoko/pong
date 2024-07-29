@@ -19,7 +19,10 @@ public enum PlayerType {
                 Bindings.getKeyCode(p, Control.DOWN), false));
     }),
     NETWORK((game, player) -> {}),
-    COMPUTER((game, player) -> game.getConnections().put(LocalGame.nextToken(), player));
+    COMPUTER((game, player) -> {
+        game.getConnections().put(LocalGame.nextToken(), player);
+        player.enableComputerInput();
+    });
 
     private final BiConsumer<LocalGame, Player> action;
 
