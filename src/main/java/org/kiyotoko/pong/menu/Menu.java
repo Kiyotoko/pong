@@ -15,10 +15,10 @@ public class Menu extends Scene {
     public Menu(Group content) {
         super(content, 720, 480);
 
-        Button single = new Button("Single", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.COMPUTER)));
-        Button duo = new Button("Duo", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.LOCAL)));
-        Button host = new Button("Host", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.NETWORK)));
-        Button join = new Button("Join", e -> ((Stage) getWindow()).setScene(new RemoteGame()));
+        Button single = new Button("Single Player", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.COMPUTER)));
+        Button duo = new Button("Local Multiplayer", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.LOCAL)));
+        Button host = new Button("Host Online", e -> ((Stage) getWindow()).setScene(new LocalGame(PlayerType.LOCAL, PlayerType.NETWORK)));
+        Button join = new Button("Join Online", e -> ((Stage) getWindow()).setScene(new RemoteGame()));
 
         VBox box = new VBox(10);
         box.getChildren().addAll(new BorderPane(single), new BorderPane(duo), new BorderPane(host), new BorderPane(join));

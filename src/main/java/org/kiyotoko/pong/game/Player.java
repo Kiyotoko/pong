@@ -23,7 +23,7 @@ public class Player extends GameObject {
         super(game);
 
         getScoreboard().setTextFill(Color.WHITE);
-        getScoreboard().setFont(Font.loadFont(App.class.getResourceAsStream("ARCADECLASSIC.TTF"), 56));
+        getScoreboard().setFont(Font.loadFont(App.class.getResourceAsStream("PixelFont.otf"), 56));
 
         getPane().setLayoutX(getGame().getWidth() * (0.25 + 0.5 * (getGame().getGameObjects().size() - 1)) - 50);
         getPane().setLayoutY((getGame().getHeight() - 100.0) * 0.5);
