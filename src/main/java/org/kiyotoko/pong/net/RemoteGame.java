@@ -6,8 +6,11 @@ import io.grpc.ManagedChannelBuilder;
 import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import org.kiyotoko.pong.game.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RemoteGame extends Game {
+    private static final Logger logger = LoggerFactory.getLogger(RemoteGame.class);
 
     private final PongGrpc.PongBlockingStub blockingStub;
 
@@ -20,6 +23,7 @@ public class RemoteGame extends Game {
         for (int p = 1; p < 4; p++) {
             addEventHandlers(p);
         }
+        join();
     }
 
     private void addEventHandlers(final int player) {
@@ -62,6 +66,7 @@ public class RemoteGame extends Game {
         token = reply.getToken();
         playerId = reply.getPlayerId();
 
+        logger.info("Game joined with id={} and token={}", playerId, token);
         startTimeline();
     }
 

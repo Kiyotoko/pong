@@ -77,6 +77,7 @@ public class LocalGame extends Game {
                 if (getConnections().size() < 2) {
                     var token = nextToken();
                     var player = (Player) getGameObjects().get(getConnections().size());
+                    logger.info("Player joined ({} -> {})", token, player);
                     getConnections().put(token, player);
                     if (getConnections().size() == 2) startTimeline();
 
