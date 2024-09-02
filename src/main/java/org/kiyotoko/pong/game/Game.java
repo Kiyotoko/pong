@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.kiyotoko.pong.menu.Menu;
-import org.kiyotoko.pong.menu.Button;
+import org.kiyotoko.pong.menu.UITools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,8 +58,8 @@ public class Game extends Scene {
     public void end(int winner) {
         timeline.stop();
 
-        Button info = new Button("Player " + winner + " wins", e -> {});
-        Button exit = new Button("Exit", e -> exit());
+        var info = UITools.createText("Player " + winner + " wins");
+        var exit = UITools.createButton("Exit", () -> exit());
 
         VBox box = new VBox(20);
         box.getChildren().addAll(new BorderPane(info), new BorderPane(exit));

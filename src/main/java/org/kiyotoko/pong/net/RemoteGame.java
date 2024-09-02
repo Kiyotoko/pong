@@ -14,10 +14,10 @@ public class RemoteGame extends Game {
 
     private final PongGrpc.PongBlockingStub blockingStub;
 
-    public RemoteGame() {
+    public RemoteGame(String address) {
         super(new Group());
 
-        Channel channel = ManagedChannelBuilder.forAddress("localhost", 4242).usePlaintext().build();
+        Channel channel = ManagedChannelBuilder.forAddress(address, 4242).usePlaintext().build();
         blockingStub = PongGrpc.newBlockingStub(channel);
 
         for (int p = 1; p < 4; p++) {
