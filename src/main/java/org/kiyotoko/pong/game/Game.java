@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -21,12 +22,18 @@ import java.util.List;
 import java.util.Map;
 
 public class Game extends Scene {
+    // Game objects
     private final List<GameObject> objects = new ArrayList<>();
     private final Map<String, Player> players = new HashMap<>();
     private final Map<String, Ball> balls = new HashMap<>();
 
+    // Graphics
     private final Group content;
+    private final BorderPane pane;
+    private final Label info = UITools.createText("");
+    private final Label exit = UITools.createButton("Exit", () -> exit());
 
+    // Timeline
     private final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10),
             event -> updateAll()));
 
@@ -34,6 +41,15 @@ public class Game extends Scene {
         super(content, 720, 480);
         this.content = content;
 
+        VBox box = new VBox(20);
+        box.getChildren().addAll(new BorderPane(info), new BorderPane(exit));
+        box.setAlignment(Pos.CENTER);
+
+        this.pane = new BorderPane(box);
+        pane.setPrefSize(getWidth(), getHeight());
+        pane.setVisible(false);
+        getContent().getChildren().add(pane);
+        
         setFill(Color.BLACK);
         createLines();
     }
@@ -57,17 +73,18 @@ public class Game extends Scene {
 
     public void end(int winner) {
         timeline.stop();
+        info("Player " + winner + " wins");
+        pane.setVisible(true);
+    }
 
-        var info = UITools.createText("Player " + winner + " wins");
-        var exit = UITools.createButton("Exit", () -> exit());
+    public void info(String msg) {
+        info.setText(msg);
+        info.setTextFill(UITools.INFO_COLOR);
+    }
 
-        VBox box = new VBox(20);
-        box.getChildren().addAll(new BorderPane(info), new BorderPane(exit));
-        box.setAlignment(Pos.CENTER);
-
-        BorderPane pane = new BorderPane(box);
-        pane.setPrefSize(getWidth(), getHeight());
-        getContent().getChildren().add(pane);
+    public void error(String msg) {
+        info.setText(msg);
+        info.setTextFill(UITools.ERROR_COLOR);
     }
 
     public void exit() {
@@ -88,5 +105,13 @@ public class Game extends Scene {
 
     public Group getContent() {
         return content;
+    }
+
+    public BorderPane getPane() {
+        return pane;
+    }
+
+    public Timeline getTimeline() {
+        return timeline;
     }
 }

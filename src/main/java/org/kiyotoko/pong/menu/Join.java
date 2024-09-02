@@ -34,9 +34,12 @@ public class Join extends Scene {
         address.applyCss();
         
         var connect = UITools.createButton("Connect", () -> {
-            if (address.getText().isBlank()) error("Address can not be null");
+            final String text = address.getText();
+            if (text.isBlank()) error("Address can not be blank");
+            if (!(text.matches("([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9]).([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9]).([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9]).([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9])")
+            || text.equals("localhost"))) error("Address is not valid");
             else try {
-                ((Stage) getWindow()).setScene(new RemoteGame(address.getText()));
+                ((Stage) getWindow()).setScene(new RemoteGame(text));
             } catch (Throwable throwable) {
                 Throwable cause = throwable;
                 while (cause.getCause() != null) {

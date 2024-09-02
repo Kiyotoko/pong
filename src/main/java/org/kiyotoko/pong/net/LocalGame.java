@@ -10,12 +10,17 @@ import io.grpc.stub.StreamObserver;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+
 import org.kiyotoko.pong.game.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.nio.charset.Charset;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -24,19 +29,13 @@ import java.util.stream.Collectors;
 public class LocalGame extends Game {
     private static final Logger logger = LoggerFactory.getLogger(LocalGame.class);
 
-    private final Server server = ServerBuilder.forPort(4242).addService(new PongService()).build();
+    private final Server server;
     private final Map<ByteString, Player> connections = new HashMap<>(2);
 
     String password = "";
 
     public LocalGame(PlayerType... types) {
         super(new Group());
-
-        try {
-            server.start();
-        } catch (IOException ex) {
-            logger.error("Could not start server", ex);
-        }
 
         for (var type : types) {
             var player = new Player(this);
@@ -45,13 +44,61 @@ public class LocalGame extends Game {
         }
         Ball ball = new Ball(this);
         getBalls().put(ball.toString(), ball);
+        
+        Server host = null;
         if (getConnections().size() == getPlayers().size()) startTimeline();
+        else {
+            getPane().setVisible(true);
+            try {
+                host = ServerBuilder.forPort(4242).addService(new PongService()).build();
+                host.start();
+                logger.info("Started server");
+            } catch (IOException ex) {
+                error("Could not start server");
+                logger.error("Could not start server", ex);
+            }
+            try {
+                info(getExternalIpAddress());
+            } catch (SocketException ex) {
+                error(ex.getMessage());
+                logger.error(ex.getMessage(), ex);
+            }
+        }
+        this.server = host;
 
+        // Sets the event handler later, so that the window is initialisised
         Platform.runLater(() -> getWindow().setOnCloseRequest(e -> stop()));
     }
 
+    private static String getExternalIpAddress() throws SocketException {
+        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        while (networkInterfaces.hasMoreElements()) {
+            NetworkInterface networkInterface = networkInterfaces.nextElement();
+
+            // Skip loopback and non-active interfaces
+            if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                continue;
+            }
+
+            // Get the IP addresses for this interface
+            Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+            while (inetAddresses.hasMoreElements()) {
+                InetAddress inetAddress = inetAddresses.nextElement();
+
+                // Skip loopback addresses
+                if (!inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
+                    return inetAddress.getHostAddress();
+                }
+            }
+        }
+        throw new SocketException("No external IP address found.");
+    }
+
     public void stop() {
-        server.shutdown();
+        if (server != null) {
+            server.shutdown();
+            logger.info("Stopped server");
+        }
     }
 
     @Override
@@ -79,7 +126,10 @@ public class LocalGame extends Game {
                     var player = (Player) getGameObjects().get(getConnections().size());
                     logger.info("Player joined ({} -> {})", token, player);
                     getConnections().put(token, player);
-                    if (getConnections().size() == 2) startTimeline();
+                    if (getConnections().size() == 2) {
+                        startTimeline();
+                        getPane().setVisible(false);
+                    }
 
                     responseObserver.onNext(JoinReply.newBuilder().setToken(token).setPlayerId(player.toString()).build());
                     responseObserver.onCompleted();

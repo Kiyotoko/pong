@@ -8,24 +8,24 @@
 
 <table>
     <tr>
-        <td><img src="images/Menu.png"></td>
+        <td><img alt="Menu Image Preview" src="images/Menu.png"></td>
         <td>Enjoy the game in your preferred way, whether solo, locally with friends, or online with players from
         around the globe!</td>
     </tr>
     <tr>
         <td>Single Player: Challenge yourself against the computer's AI. Hone your skills and enjoy a solo
         experience.</td>
-        <td><img src="images/LocalMultiplayer.png"></td>
+        <td><img alt="Local Multiplayer Image Preview" src="images/LocalMultiplayer.png"></td>
     </tr>
     <tr>
-        <td><img src="images/SinglePlayer.png"></td>
+        <td><img alt="Singleplayer Image Preview" src="images/SinglePlayer.png"></td>
         <td>Local Multiplayer: Play with a friend on the same machine. This type of play is perfect for head-to-head
         competition, making it ideal for game nights or casual matches.</td>
     </tr>
     <tr>
         <td>Online Multiplayer: Connect with other players from around the world. You can either host a game on your
         machine or join a game hosted by someone else.</td>
-        <td><img src="images/Multiplayer.png"></td>
+        <td><img alt="Multiplayer Image Preview" src="images/Multiplayer.png"></td>
     </tr>
 </table>
 
