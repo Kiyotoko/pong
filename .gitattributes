@@ -1,0 +1,3 @@
+*.proto linguist-detectable
+
+.png filter=lfs diff=lfs merge=lfs
