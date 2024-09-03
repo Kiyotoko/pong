@@ -47,7 +47,8 @@
 
 ## Run pong
 
-> ⚠️ Please note that you need to install java on your machine first before you can run pong. Pong requires at least java 11.
+> [!WARNING]
+> Please note that you need to install java on your machine first before you can run pong. Pong requires at least java 11.
 
 You can download the latest prebuild jar binaries [here](https://github.com/Kiyotoko/pong/releases). After downloading the jar, you can run it with the command below:
 
