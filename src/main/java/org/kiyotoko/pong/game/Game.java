@@ -19,6 +19,7 @@ import org.kiyotoko.pong.menu.UITools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,8 +71,8 @@ public class Game extends Scene {
 
     // Game objects
     private final List<GameObject> objects = new ArrayList<>();
-    private final Map<String, Player> players = new HashMap<>();
-    private final Map<String, Ball> balls = new HashMap<>();
+    private final Map<String, Player> players = new LinkedHashMap<>();
+    private final Map<String, Ball> balls = new LinkedHashMap<>();
 
     // Graphics
     private final Group content;

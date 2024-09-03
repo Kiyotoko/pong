@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.kiyotoko.pong.App;
+import org.kiyotoko.pong.menu.UITools;
 import org.kiyotoko.pong.net.PlayerOuterClass;
 
 public class Player extends GameObject {
@@ -22,7 +23,7 @@ public class Player extends GameObject {
     public Player(Game game) {
         super(game);
 
-        getScoreboard().setTextFill(Color.WHITE);
+        getScoreboard().setTextFill(UITools.TEXT_COLOR);
         getScoreboard().setFont(Font.loadFont(App.class.getResourceAsStream("PixelFont.otf"), 56));
 
         getPane().setLayoutX(getGame().getWidth() * (0.25 + 0.5 * (getGame().getGameObjects().size() - 1)) - 50);

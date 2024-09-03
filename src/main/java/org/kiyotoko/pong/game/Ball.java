@@ -13,7 +13,7 @@ public class Ball extends GameObject {
         getShape().setWidth(8);
         getShape().setHeight(8);
 
-        setPosition(new Point2D(getGame().getWidth() * 0.5, getGame().getHeight() * 0.5));
+        setPosition(new Point2D(getGame().getWidth() * 0.5 - 4, getGame().getHeight() * 0.5 - 4));
         setVelocity(new Point2D(1.0, 0.0));
     }
 
@@ -31,7 +31,7 @@ public class Ball extends GameObject {
             for (var player : List.copyOf(getGame().getPlayers().values())) {
                 if (Math.abs(player.getPosition().getX() - getPosition().getX()) > 100.0) {
                     player.setPoints(player.getPoints() + 1);
-                    setPosition(new Point2D(getGame().getWidth() * 0.5, getGame().getHeight() * 0.5));
+                    setPosition(new Point2D(getGame().getWidth() * 0.5 - 4, getGame().getHeight() * 0.5 - 4));
                     setVelocity(new Point2D(Math.signum(getVelocity().getX()), 0.0));
                     break;
                 }

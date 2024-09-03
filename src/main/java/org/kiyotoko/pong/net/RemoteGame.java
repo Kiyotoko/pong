@@ -3,6 +3,7 @@ package org.kiyotoko.pong.net;
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 
@@ -21,16 +22,28 @@ public class RemoteGame extends Game {
     public RemoteGame(String address) {
         super(new Group());
 
+        // Create channel and stub
         channel = ManagedChannelBuilder.forAddress(address, 4242).usePlaintext().build();
         blockingStub = PongGrpc.newBlockingStub(channel);
 
+        // Simply add all handlers
         for (int p = 1; p < 4; p++) {
             addEventHandlers(p);
         }
-        join();
+        join(); // Joins the server
+
+        // Sets the event handler later, so that the window is initialisised
+        Platform.runLater(() -> getWindow().setOnCloseRequest(e -> stop()));
     }
 
+    /**
+     * Adds the key bindings from the specified player to the game.
+     * 
+     * @param player the key binding number of the player to add
+     * @throws IllegalArgumentException if the player is outside of the range of 1 to 4
+     */
     private void addEventHandlers(final int player) {
+        if (player < 1 || player > 4) throw new IllegalArgumentException("Must be in the range of 1 to 4");
         var up = Bindings.getKeyCode(player, Control.UP);
         var down = Bindings.getKeyCode(player, Control.DOWN);
         addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -51,6 +64,9 @@ public class RemoteGame extends Game {
         });
     }
 
+    /**
+     * Updates the game locally, then synchronize the game with the server.
+     */
     @Override
     public void updateAll() {
         super.updateAll();
@@ -63,6 +79,9 @@ public class RemoteGame extends Game {
         stop();
     }
 
+    /**
+     * Stops the network channel.
+     */
     private void stop() {
         channel.shutdown();
         try {
@@ -86,6 +105,11 @@ public class RemoteGame extends Game {
     ByteString token;
     String playerId;
 
+    /**
+     * Joins the server.
+     * 
+     * @throws Exception if it could not connect to the server
+     */
     public void join() {
         try {
             var reply = blockingStub.join(JoinRequest.newBuilder().build());
@@ -101,6 +125,12 @@ public class RemoteGame extends Game {
         }
     }
 
+    /**
+     * Synchronizes this game with the state of the server. If a connection error happens,
+     * it will stop the timeline and show the menu.
+     * 
+     * @param request the update request containing the inputs from this player
+     */
     public synchronized void update(UpdateRequest request) {
         try {
             var reply = blockingStub.update(request);
