@@ -10,6 +10,7 @@ import io.grpc.stub.StreamObserver;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.input.KeyEvent;
 
 import org.kiyotoko.pong.game.*;
 import org.slf4j.Logger;
@@ -34,37 +35,47 @@ public class LocalGame extends Game {
 
     String password = "";
 
-    public LocalGame(PlayerType... types) {
+    public LocalGame() {
         super(new Group());
 
-        for (var type : types) {
-            var player = new Player(this);
-            type.getAction().accept(this, player);
-            getPlayers().put(player.toString(), player);
-        }
+        // Creates game data
+        var player = new Player(this);
+        getConnections().put(LocalGame.nextToken(), player);
+        var p = getConnections().size();
+        addEventHandler(KeyEvent.KEY_PRESSED, player.getEventHandler(
+                Bindings.getKeyCode(p, Control.UP),
+                Bindings.getKeyCode(p, Control.DOWN), true));
+        addEventHandler(KeyEvent.KEY_RELEASED, player.getEventHandler(
+                Bindings.getKeyCode(p, Control.UP),
+                Bindings.getKeyCode(p, Control.DOWN), false));
+        getPlayers().put(player.toString(), player);
+
+        var remote = new Player(this);
+        getPlayers().put(remote.toString(), remote);
+
         Ball ball = new Ball(this);
         getBalls().put(ball.toString(), ball);
-        
-        Server host = null;
-        if (getConnections().size() == getPlayers().size()) startTimeline();
-        else {
-            getPane().setVisible(true);
-            try {
-                host = ServerBuilder.forPort(4242).addService(new PongService()).build();
-                host.start();
-                logger.info("Started server");
-            } catch (IOException ex) {
-                error("Could not start server");
-                logger.error("Could not start server", ex);
-            }
-            try {
-                info(getExternalIpAddress());
-            } catch (SocketException ex) {
-                error(ex.getMessage());
-                logger.error(ex.getMessage(), ex);
-            }
+        getPane().setVisible(true);
+
+        // Start server
+        Server host = null;        
+        try {
+            host = ServerBuilder.forPort(4242).addService(new PongService()).build();
+            host.start();
+            logger.info("Started server");
+        } catch (IOException ex) {
+            error("Could not start server");
+            logger.error("Could not start server", ex);
         }
         this.server = host;
+    
+        // Get external ip address
+        try {
+            info(getExternalIpAddress());
+        } catch (SocketException ex) {
+            error(ex.getMessage());
+            logger.error(ex.getMessage(), ex);
+        }
 
         // Sets the event handler later, so that the window is initialisised
         Platform.runLater(() -> getWindow().setOnCloseRequest(e -> stop()));
@@ -126,11 +137,9 @@ public class LocalGame extends Game {
                     var player = (Player) getGameObjects().get(getConnections().size());
                     logger.info("Player joined ({} -> {})", token, player);
                     getConnections().put(token, player);
-                    if (getConnections().size() == 2) {
-                        startTimeline();
-                        getPane().setVisible(false);
-                    }
-
+                    startTimeline();
+                    getPane().setVisible(false);
+                    
                     responseObserver.onNext(JoinReply.newBuilder().setToken(token).setPlayerId(player.toString()).build());
                     responseObserver.onCompleted();
                 } else {

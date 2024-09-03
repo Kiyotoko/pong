@@ -60,6 +60,10 @@ public class RemoteGame extends Game {
     @Override
     public void exit() {
         super.exit();
+        stop();
+    }
+
+    private void stop() {
         channel.shutdown();
         try {
             // Wait for the channel to terminate, with a timeout of 5 seconds
@@ -83,12 +87,18 @@ public class RemoteGame extends Game {
     String playerId;
 
     public void join() {
-        var reply = blockingStub.join(JoinRequest.newBuilder().build());
-        token = reply.getToken();
-        playerId = reply.getPlayerId();
+        try {
+            var reply = blockingStub.join(JoinRequest.newBuilder().build());
+            token = reply.getToken();
+            playerId = reply.getPlayerId();
 
-        logger.info("Game joined with id={} and token={}", playerId, token);
-        startTimeline();
+            logger.info("Game joined with id={} and token={}", playerId, token);
+            startTimeline();
+        } catch (Exception ex) {
+            stop();
+            logger.error("Could not join game", ex);
+            throw ex;
+        }
     }
 
     public synchronized void update(UpdateRequest request) {
@@ -109,6 +119,7 @@ public class RemoteGame extends Game {
             }
         } catch (Exception ex) {
             error("Connection Error: " + ex.getMessage());
+            logger.error("Connection error", ex);
             getTimeline().stop();
             getPane().setVisible(true);;
         }

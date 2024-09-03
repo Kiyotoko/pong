@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -22,6 +23,51 @@ import java.util.List;
 import java.util.Map;
 
 public class Game extends Scene {
+
+    public static Game newSingleplayer() {
+        Game game = new Game(new Group());
+
+        var player = new Player(game);
+        game.addEventHandler(KeyEvent.KEY_PRESSED, player.getEventHandler(
+                Bindings.getKeyCode(1, Control.UP),
+                Bindings.getKeyCode(1, Control.DOWN), true));
+        game.addEventHandler(KeyEvent.KEY_RELEASED, player.getEventHandler(
+                Bindings.getKeyCode(1, Control.UP),
+                Bindings.getKeyCode(1, Control.DOWN), false));
+        game.getPlayers().put(player.toString(), player);
+
+        var computer = new Player(game);
+        computer.enableComputerInput();
+        game.getPlayers().put(computer.toString(), computer);
+
+        Ball ball = new Ball(game);
+        game.getBalls().put(ball.toString(), ball);
+        game.startTimeline();
+
+        return game;
+    }
+
+    public static Game newLocalMultiplayer() {
+        Game game = new Game(new Group());
+
+        for (int i = 1; i < 3; i++) {
+            var player = new Player(game);
+            game.addEventHandler(KeyEvent.KEY_PRESSED, player.getEventHandler(
+                    Bindings.getKeyCode(i, Control.UP),
+                    Bindings.getKeyCode(i, Control.DOWN), true));
+            game.addEventHandler(KeyEvent.KEY_RELEASED, player.getEventHandler(
+                    Bindings.getKeyCode(i, Control.UP),
+                    Bindings.getKeyCode(i, Control.DOWN), false));
+            game.getPlayers().put(player.toString(), player);
+        }
+
+        Ball ball = new Ball(game);
+        game.getBalls().put(ball.toString(), ball);
+        game.startTimeline();
+
+        return game;
+    }
+
     // Game objects
     private final List<GameObject> objects = new ArrayList<>();
     private final Map<String, Player> players = new HashMap<>();
