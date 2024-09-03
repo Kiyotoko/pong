@@ -2,9 +2,10 @@
     <h1>Pong</h1>
     <!-- Badges -->
     <div>
+        <img alt="Java CI with Maven" src="https://github.com/Kiyotoko/pong/actions/workflows/maven.yml/badge.svg">
+        <img alt="CodeQL" src="https://github.com/Kiyotoko/pong/actions/workflows/github-code-scanning/codeql/badge.svg">
         <img alt="Automatic Dependency Submission" src="https://github.com/Kiyotoko/pong/actions/workflows/dependency-graph/auto-submission/badge.svg">
         <img alt="Dependabot Updates" src="https://github.com/Kiyotoko/pong/actions/workflows/dependabot/dependabot-updates/badge.svg">
-        <img alt="Java CI with Maven" src="https://github.com/Kiyotoko/pong/actions/workflows/maven.yml/badge.svg">
     </div>
     <i>Java implementation of the classic retro game pong.</i>
 </div>
