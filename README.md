@@ -41,7 +41,9 @@
 
 ## Run pong
 
-> ⚠️ Please note that you need to install java on your machine first before you can run pong.
+> ⚠️ Please note that you need to install java on your machine first before you can run pong. Pong requires at least java 11.
+
+You can download the latest prebuild jar binaries [here](https://github.com/Kiyotoko/pong/releases). After downloading the jar, you can run it with the command below:
 
 ```shell
 java -jar pong-*.*-uber.jar
@@ -49,6 +51,8 @@ java -jar pong-*.*-uber.jar
 
 ## Build on your own
 
+You can build pong yourself by using the maven wrapper.
+
 ```shell
-mvn install
+./mvnw install
 ```

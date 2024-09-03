@@ -128,6 +128,12 @@
         </pluginManagement>
 
         <plugins>
+            <!-- Maven wrapper -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-wrapper-plugin</artifactId>
+                <version>3.3.2</version>
+            </plugin>
             <!-- Property detection -->
             <plugin>
                 <groupId>kr.motd.maven</groupId>
@@ -202,6 +208,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Execute the project -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -214,7 +221,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <executable>${project.build.directory}/${project.artifactId}.exe</executable>
                     <mainClass>${project.mainClass}</mainClass>
                 </configuration>
             </plugin>

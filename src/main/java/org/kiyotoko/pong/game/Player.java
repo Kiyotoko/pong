@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.kiyotoko.pong.App;
 import org.kiyotoko.pong.menu.UITools;
