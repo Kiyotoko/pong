@@ -36,7 +36,7 @@ public class Join extends Scene {
         var connect = UITools.createButton("Connect", () -> {
             final String text = address.getText();
             if (text.isBlank()) error("Address can not be blank");
-            if (!(text.matches("([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9]).([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9]).([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9]).([0-2][0-9][0-9]|3[0-9][0-9]|[0-9]?[0-9])")
+            else if (!(text.matches("([0-1]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))([.]([0-1]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))){3}")
             || text.equals("localhost"))) error("Address is not valid");
             else try {
                 ((Stage) getWindow()).setScene(new RemoteGame(text));
