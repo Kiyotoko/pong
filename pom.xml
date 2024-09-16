@@ -15,7 +15,7 @@
         <maven.compiler.source>${project.javaVersion}</maven.compiler.source>
         <maven.compiler.target>${project.javaVersion}</maven.compiler.target>
         <maven.compiler.release>${project.javaVersion}</maven.compiler.release>
-        <proto.version>4.28.0</proto.version>
+        <proto.version>4.28.1</proto.version>
         <grpc.version>1.66.0</grpc.version>
     </properties>
 
